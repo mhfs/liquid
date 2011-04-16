@@ -35,6 +35,14 @@ module Liquid
 
     def render(context)
       return '' if @name.nil?
+
+      # Apply auto filters if they're registered.
+      if context.registers[:auto_filters]
+        context.registers[:auto_filters].each do |filter|
+          @filters << filter
+        end
+      end
+
       @filters.inject(context[@name]) do |output, filter|
         filterargs = filter[1].to_a.collect do |a|
          context[a]

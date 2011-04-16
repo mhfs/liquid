@@ -134,11 +134,8 @@ module Liquid
     # Applies the given filter to all variables in the document
     #
     def auto_filter(filter, params = nil)
-      root.nodelist.each do |node|
-        if node.respond_to?(:filters)
-          node.filters << [filter.to_sym, params]
-        end
-      end
+      registers[:auto_filters] ||= []
+      registers[:auto_filters] << [filter, params]
     end
 
     private
